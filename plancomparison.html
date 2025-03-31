@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Plans</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .plans-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 30px;
+        }
+
+        .plan {
+            flex: 1;
+            min-width: 250px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            border: 3px solid transparent;
+        }
+
+        .plan:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .plan.selected {
+            border-color: #4CAF50;
+            background-color: #f0f9f0;
+        }
+
+        .plan-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .plan-features {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+
+        .plan-features li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .plan-features li::before {
+            content: "✓";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #FFC107;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .star-icon {
+            font-size: 1rem;
+            color: #FFC107;
+        }
+
+        .main-cta {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            position: relative;
+            top: calc(95vh - 100% - 120px);
+        }
+
+        .main-cta:hover {
+            background-color: #388E3C;
+        }
+
+        .secondary-cta {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px;
+            background-color: #9E9E9E;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 50px;
+            transition: background-color 0.3s;
+            position: relative;
+            top: calc(110vh - 100% - 120px);
+        }
+
+        .secondary-cta:hover {
+            background-color: #757575;
+        }
+
+        .disclaimer {
+            font-size: 0.8rem;
+            color: #757575;
+            text-align: center;
+            margin-top: 10px;
+            max-width: 600px;
+        }
+
+        @media (max-width: 768px) {
+            .plans-container {
+                flex-direction: column;
+            }
+            
+            .plan {
+                width: 100%;
+                min-width: unset;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Try for 30 Days!</h1>
+    </div>
+
+    <div class="plans-container">
+        <div class="plan" data-plan="free">
+            <div class="plan-title">Free</div>
+            <ul class="plan-features">
+                <li>Free shipping</li>
+                <li>Some customer support</li>
+				<li>Free and easy returns</li>
+				<li>Some exclusive deals</li>
+            </ul>
+        </div>
+
+        <div class="plan selected" data-plan="standard">
+            <div class="plan-title">Standard</div>
+			<div class="recommended-badge">
+				<span class="star-icon">★</span> Recommended
+            </div>
+			<ul class="plan-features">
+                <li>Free shipping</li>
+                <li>More customer support</li>
+				<li>Free and easy returns</li>
+				<li>More exclusive deals</li>
+            </ul>
+        </div>
+
+        <div class="plan" data-plan="premium">
+            <div class="plan-title">Premium</div>
+            <ul class="plan-features">
+                <li>Free shipping</li>
+                <li>Premium customer support</li>
+				<li>Free and easy returns</li>
+				<li>More exclusive deals</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="main-cta" id="main-cta">Start 30-day free trial</button>
+    <button class="secondary-cta" id="secondary-cta">Start Free Forever plan</button>
+    <p class="disclaimer">You will never be billed for the Free Forever plan, even after the first 30 days.</p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables to track user interactions
+            let selectedPlan = 'standard';
+            let hasSeenFreeForeverButton = false;
+
+            // Select all plan elements
+            const plans = document.querySelectorAll('.plan');
+            
+            // Add click event listeners to plans
+            plans.forEach(plan => {
+                plan.addEventListener('click', function() {
+                    // Remove selected class from all plans
+                    plans.forEach(p => p.classList.remove('selected'));
+                    
+                    // Add selected class to clicked plan
+                    this.classList.add('selected');
+                    
+                    // Update selected plan
+                    selectedPlan = this.getAttribute('data-plan');
+                });
+            });
+
+            // Track scrolling to see if user has viewed the Free Forever button
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        hasSeenFreeForeverButton = true;
+                        // Once seen, no need to continue observing
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            // Start observing the secondary CTA button
+            observer.observe(document.getElementById('secondary-cta'));
+
+            // Function to handle button clicks and redirect
+            function handleRedirect(isFreeForever) {
+                const baseUrl = 'https://www.qualtrics.com';
+                const params = new URLSearchParams({
+                    selectedPlan: selectedPlan,
+                    isFreeForever: isFreeForever,
+                    hasSeenFreeForeverButton: hasSeenFreeForeverButton
+                });
+                
+                window.location.href = `${baseUrl}?${params.toString()}`;
+            }
+
+            // Add click event listeners to CTA buttons
+            document.getElementById('main-cta').addEventListener('click', function() {
+                handleRedirect(false);
+            });
+
+            document.getElementById('secondary-cta').addEventListener('click', function() {
+                handleRedirect(true);
+            });
+        });
+    </script>
+</body>
+</html>
